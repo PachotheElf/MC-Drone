@@ -40,3 +40,8 @@ while running do
     print("||"..message.."||")
   end
 end
+local actions = drone.getAllActions()
+for k,v in actions do
+	print(k,v)
+end
+	
