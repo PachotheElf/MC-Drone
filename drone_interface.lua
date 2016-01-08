@@ -28,11 +28,12 @@ local posZ = 0.0;
 
 --	FUNCTIONS
 function API.fillTable()
-	API.setTable("Close", shutdown, 70,80,1,3)
-	if(state = 0) then	--	Main screen
-		API.setTable("Status", getStatus, 10, 20, 3, 5)
+	API.setTable("Close", shutdown, 70,80,1,1)
+	if(state == 0) then	--	Main screen
+		API.setTable("Status", getStatus, 10, 20, 3, 3)
 	else
 	end
+	API.screen()
 end
 
 function getClick()
