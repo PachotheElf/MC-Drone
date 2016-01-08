@@ -12,6 +12,8 @@ local gpu = component.gpu
 --	1 = 
 local state	= 0
 
+local running = true
+
 --	COMMUNICATIONS VARIABLES
 local s_port = 1;
 local s_address = "";
@@ -26,9 +28,9 @@ local posZ = 0.0;
 
 --	FUNCTIONS
 function API.fillTable()
+	API.setTable("Close", shutdown, 70,80,1,3)
 	if(state = 0) then	--	Main screen
 		API.setTable("Status", getStatus, 10, 20, 3, 5)
-		
 	else
 	end
 end
@@ -63,6 +65,9 @@ function getStatus()
 
 end
 
+function shutdown()
+	running = false
+end
 
 --	MAIN PROGRAM
 modem.open(1)
@@ -72,6 +77,6 @@ gpu.setResolution(80,25)
 API.clear()
 API.fillTable()
 API.heading("Drone Control Module")
-while true do
+while running do
 	getClick()
 end
