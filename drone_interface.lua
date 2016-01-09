@@ -6,7 +6,7 @@ local colors = require("colors")
 local component = require("component")
 local modem = component.modem
 local gpu = component.gpu
-local nav = component.navigation
+nav = component.navigation
 
 --	PROGRAM STATE
 --	0 = main screen
