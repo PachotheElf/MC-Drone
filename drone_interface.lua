@@ -6,7 +6,7 @@ local colors = require("colors")
 local component = require("component")
 local modem = component.modem
 local gpu = component.gpu
-nav = component.navigation
+local nav = component.navigation
 
 --	PROGRAM STATE
 --	0 = main screen
@@ -87,6 +87,8 @@ function shutdown()
 end
 
 function getPlayerPos()
+	print(nav)
+	print(nav.getPosition())
 	pPosX, pPosY, pPosZ = nav.getPosition()
 	playerPos[0] = pPosX + POS_OFFSET[0]
 	playerPos[1] = pPosY + POS_OFFSET[1]
