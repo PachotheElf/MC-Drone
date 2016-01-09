@@ -43,7 +43,7 @@ while running do
 		print("initializing")
 		modem.send(s_add, s_port, serial.serialize("pong"))
 		s_add = from
-	elseif (message == "approachPlayer" || message == "goHome") then
+	elseif ((message == "approachPlayer") || (message == "goHome")) then
 		local i = 0;
 		local homePos={0,0,0}
 		while i < 3 do
