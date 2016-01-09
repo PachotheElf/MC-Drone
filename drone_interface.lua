@@ -87,7 +87,7 @@ function shutdown()
 end
 
 function getPlayerPos()
-	local pPosX, pPosY, pPosZ = nav.getPosition()
+	pPosX, pPosY, pPosZ = nav.getPosition()
 	playerPos[0] = pPosX + POS_OFFSET[0]
 	playerPos[1] = pPosY + POS_OFFSET[1]
 	playerPos[2] = pPosZ + POS_OFFSET[2]
