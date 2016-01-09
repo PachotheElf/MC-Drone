@@ -20,7 +20,7 @@ local s_port = 1;
 local s_address = "";
 
 --	PLAYER POSITION
-local POS_OFFSET {256, 0, 512}
+local POS_OFFSET = {256, 0, 512}
 local playerPos = {0,0,0}
 
 --	DRONE STATUS
@@ -105,7 +105,7 @@ end
 --	MAIN PROGRAM
 modem.open(1)
 modem.broadcast(1, serial.serialize("init"))
-_,_, s_address,_,_, = event.pull("modem_message")
+_,_, s_address,_,_,_ = event.pull("modem_message")
 term.setCursorBlink(false)
 gpu.setResolution(80,25)
 API.clear()

@@ -41,8 +41,8 @@ while running do
 	message = serial.unserialize(msg)
 	if (message == "init") then
 		print("initializing")
-		modem.send(s_add, s_port, serial.serialize("pong"))
 		s_add = from
+		modem.send(s_add, s_port, serial.serialize("pong"))
 	elseif ((message == "approachPlayer") or (message == "goHome")) then
 		local i = 0;
 		local homePos={0,0,0}
