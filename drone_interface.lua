@@ -87,12 +87,10 @@ function shutdown()
 end
 
 function getPlayerPos()
-	print(nav)
-	print(nav.getPosition())
 	pPosX, pPosY, pPosZ = nav.getPosition()
-	playerPos[0] = pPosX + POS_OFFSET[0]
-	playerPos[1] = pPosY + POS_OFFSET[1]
-	playerPos[2] = pPosZ + POS_OFFSET[2]
+	playerPos[0] = pPosX + 256--POS_OFFSET[0]
+	playerPos[1] = pPosY + 0--POS_OFFSET[1]
+	playerPos[2] = pPosZ + 512--POS_OFFSET[2]
 end
 
 function getClick()
