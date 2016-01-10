@@ -62,7 +62,9 @@ function goHome()
 end
 function setHome()
 	getPlayerPos()
-	homePos = {playerPos[0], playerPos[1]-1, playerPos[2]}
+	homePos[0] = playerPos[0]
+	homePos[1] = playerPos[1]-1
+	homePos[2] = playerPos[2]
 end
 function getStatus()
 	modem.send(s_address, s_port, serial.serialize("status"))
