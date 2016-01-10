@@ -161,7 +161,7 @@ function areaSetCenter()
 	getStatus()
 end
 function areaIncX()
-	if(xSide)
+	if(xSide) then
 		workingArea[1] = workingArea[1]+1
 		xSide = false
 	else
@@ -170,7 +170,7 @@ function areaIncX()
 	end
 end
 function areaDecX()
-	if(xSide)
+	if(xSide) then
 		workingArea[4] = workingArea[4]-1
 		xSide = false
 	else
@@ -179,40 +179,44 @@ function areaDecX()
 	end
 end
 function areaIncY()
-	if(xSide)
+	if(ySide) then
 		workingArea[1] = workingArea[1]+1
-		xSide = false
+		ySide = false
 	else
 		workingArea[4] = workingArea[4]+1
-		xSide = true
+		ySide = true
 	end
 end
 function areaDecY()
-	if(xSide)
+	if(ySide) then
 		workingArea[4] = workingArea[4]-1
-		xSide = false
+		ySide = false
 	else
 		workingArea[1] = workingArea[1]+1
-		xSide = true
+		ySide = true
 	end
 end
 function areaIncZ()
-	if(xSide)
+	if(zSide) then
 		workingArea[1] = workingArea[1]+1
-		xSide = false
+		zSide = false
 	else
 		workingArea[4] = workingArea[4]+1
-		xSide = true
+		zSide = true
 	end
 end
 function areaDecZ()
-	if(xSide)
+	if(zSide) then
 		workingArea[4] = workingArea[4]-1
-		xSide = false
+		zSide = false
 	else
 		workingArea[1] = workingArea[1]+1
-		xSide = true
+		zSide = true
 	end
+end
+function areaMoveXP()
+end
+function areaMoveXN()
 end
 function shutdown()
 	running = false
