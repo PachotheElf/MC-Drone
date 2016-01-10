@@ -26,6 +26,7 @@ local playerPos = {0,0,0}
 --	DRONE STATUS
 local pressure = 0.0;
 local position = {0,0,0}
+local lastAction = ""
 
 --	DRONE AREAS
 local importChestPos = {0,0,0}
@@ -33,7 +34,7 @@ local exportChestPos = {0,0,0}
 local homePos = {0,0,0}
 local workingCenter = {0,0,0}
 local workingArea = {0,0,0,0,0,0}
-
+local areaTypes = {"Filled", "Frame", "Walls", "Sphere", "Line", "X-Wall", "Y-Wall", "Z-Wall", "X-Cylinder", "Y-Cylinder", "Z-Cylinder", "X-Pyramid", "Y-Pyramid", "Z-Pyramid", "Grid"}
 
 --	FUNCTIONS
 function API.fillTable()
@@ -43,35 +44,42 @@ function API.fillTable()
 		API.setTable("Go Home", goHome, 25, 40, 3, 3)
 		API.setTable("Set Home", setHome, 25 ,40, 6, 6)
 		API.setTable("Status", getStatus, 5, 20, 6, 6)
+		API.label(60,3, "Drone Status")
+		getStatus()
 	else
 	end
 	API.screen()
 end
 function approachPlayer()
+	lastAction = "Approach player"
 	getPlayerPos()
 	modem.send(s_address, s_port, serial.serialize("approachPlayer"))
 	modem.send(s_address, s_port, serial.serialize(playerPos[0]))
 	modem.send(s_address, s_port, serial.serialize(playerPos[1]))
 	modem.send(s_address, s_port, serial.serialize(playerPos[2]))
+	getStatus()
 end
 function goHome()
+	lastAction = "Go home"
 	modem.send(s_address, s_port, serial.serialize("goHome"))
 	modem.send(s_address, s_port, serial.serialize(homePos[0]))
 	modem.send(s_address, s_port, serial.serialize(homePos[1]))
 	modem.send(s_address, s_port, serial.serialize(homePos[2]))
+	getStatus()
 end
 function setHome()
+	lastAction = "Home set!"
 	getPlayerPos()
 	homePos[0] = playerPos[0]
 	homePos[1] = playerPos[1]-1
 	homePos[2] = playerPos[2]
+	getStatus()
 end
 function getStatus()
 	modem.send(s_address, s_port, serial.serialize("status"))
 		--	Pressure
 	local _,_,_,_,_,message = event.pull("modem_message")
 	pressure = serial.unserialize(message)
-	print("Pressure:"..pressure)
 
 	--  Position
 	local i = 0;
@@ -81,7 +89,13 @@ function getStatus()
 	i = i + 1
 	end
 
-	print("Position: "..position[0].." | "..position[1].." | "..position[2])
+	API.label(50, 5, "Action:                ")
+	API.label(50, 5, "Action: "..lastAction)
+	API.label(50, 6, "Pressure:"..pressure)
+	API.label(50, 7, "X Pos: "..position[0])
+	API.label(50, 8, "Y Pos: "..position[1])
+	API.label(50, 9, "Z Pos: "..position[2])
+	
 end
 
 function shutdown()
@@ -90,9 +104,9 @@ end
 
 function getPlayerPos()
 	pPosX, pPosY, pPosZ = nav.getPosition()
-	playerPos[0] = pPosX + 256--POS_OFFSET[0]
-	playerPos[1] = pPosY + 0--POS_OFFSET[1]
-	playerPos[2] = pPosZ + 512--POS_OFFSET[2]
+	playerPos[0] = pPosX + POS_OFFSET[1]
+	playerPos[1] = pPosY + POS_OFFSET[2]
+	playerPos[2] = pPosZ + POS_OFFSET[3]
 end
 
 function getClick()
