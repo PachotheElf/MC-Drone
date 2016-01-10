@@ -14,7 +14,7 @@ running = true;
 
 --	Drone area buffer
 areaBuffer = {0,0,0,0,0,0}
-areaType = 0;
+areaType = "";
 
 --	Functions
 local function restoreArea()
@@ -44,6 +44,7 @@ while running do
 		s_add = from
 		modem.send(s_add, s_port, serial.serialize("pong"))
 	elseif ((message == "approachPlayer") or (message == "goHome")) then
+		print("moving...")
 		local i = 0;
 		local homePos={0,0,0}
 		while i < 3 do
@@ -55,11 +56,28 @@ while running do
 		drone.addArea(homePos[0], homePos[1], homePos[2])
 		drone.setAction("goto")
 		restoreArea()
-	elseif (message == "goHome") then
 	elseif (message == "status") then
-		print("sending status")
+		print("Sending status")
 		status()
-		elseif (message == "shutdown") then
+	elseif (message == "showArea") then
+		print("Displaying area")
+		drone.showArea()
+	elseif (message == "hideArea") then	
+		print("Hiding area")
+		drone.hideArea()
+	elseif (message == "setArea") then
+		print("Setting new area")
+		local i = 1
+		while i < 7 do
+			local _,_,_,_,_,message = event.pull("modem_message")
+			areaBuffer[i] = serial.unserialize(message)
+			i = i + 1
+		end
+		local _,_,_,_,_,message = event.pull("modem_message")
+		areaType = serial.unserialize(message)
+		restoreArea()
+		
+	elseif (message == "shutdown") then
 		running = false;
 	else
 		print("||"..message.."||")

@@ -12,6 +12,9 @@ local nav = component.navigation
 --	0 = main screen
 --	1 = 
 local state	= 0
+local xSide = true
+local ySide = true
+local zSide = true
 
 local running = true
 
@@ -34,6 +37,7 @@ local exportChestPos = {0,0,0}
 local homePos = {0,0,0}
 local workingCenter = {0,0,0}
 local workingArea = {0,0,0,0,0,0}
+local workingAreaType = "Filled"
 local areaTypes = {"Filled", "Frame", "Walls", "Sphere", "Line", "X-Wall", "Y-Wall", "Z-Wall", "X-Cylinder", "Y-Cylinder", "Z-Cylinder", "X-Pyramid", "Y-Pyramid", "Z-Pyramid", "Grid"}
 
 --	FUNCTIONS
@@ -44,6 +48,32 @@ function API.fillTable()
 		API.setTable("Go Home", goHome, 25, 40, 3, 3)
 		API.setTable("Set Home", setHome, 25 ,40, 6, 6)
 		API.setTable("Status", getStatus, 5, 20, 6, 6)
+		API.setTable("Show Area", areaToggleVisibility, 5,20, 9, 9)
+		
+		API.setTable("Set Area Center", areaSetCenter, 25, 40, 9, 9)
+		API.setTable("---", areaDecX, 5, 10, 12, 12)
+		API.setTable("--", areaDecX, 10, 15, 12, 12)
+		API.setTable("-", areaDecX, 15, 20, 12, 12)
+		API.label(22, 12, "X")
+		API.setTable("+++", areaIncX, 25, 30, 12, 12)
+		API.setTable("++", areaIncX, 30, 35, 12, 12)
+		API.setTable("+", areaIncX, 35, 40, 12, 12)
+		
+		API.setTable("---", areaDecY, 5, 10, 15, 15)
+		API.setTable("--", areaDecY, 10, 15, 15, 15)
+		API.setTable("-", areaDecY, 15, 20, 15, 15)
+		API.label(22, 15, "Y")
+		API.setTable("+++", areaIncY, 25, 30, 15, 15)
+		API.setTable("++", areaIncY, 30, 35, 15, 15)
+		API.setTable("+", areaIncY, 35, 40, 15, 15)
+		
+		API.setTable("---", areaDecZ, 5, 10, 18, 18)
+		API.setTable("--", areaDecZ, 10, 15, 18, 18)
+		API.setTable("-", areaDecZ, 15, 20, 18, 18)
+		API.label(22, 12, "Z")
+		API.setTable("+++", areaIncZ, 25, 30, 18, 18)
+		API.setTable("++", areaIncZ, 30, 35, 18, 18)
+		API.setTable("+", areaIncZ, 35, 40, 18, 18)
 		API.label(60,3, "Drone Status")
 		getStatus()
 	else
@@ -54,25 +84,25 @@ function approachPlayer()
 	lastAction = "Approach player"
 	getPlayerPos()
 	modem.send(s_address, s_port, serial.serialize("approachPlayer"))
-	modem.send(s_address, s_port, serial.serialize(playerPos[0]))
 	modem.send(s_address, s_port, serial.serialize(playerPos[1]))
 	modem.send(s_address, s_port, serial.serialize(playerPos[2]))
+	modem.send(s_address, s_port, serial.serialize(playerPos[3]))
 	getStatus()
 end
 function goHome()
 	lastAction = "Go home"
 	modem.send(s_address, s_port, serial.serialize("goHome"))
-	modem.send(s_address, s_port, serial.serialize(homePos[0]))
 	modem.send(s_address, s_port, serial.serialize(homePos[1]))
 	modem.send(s_address, s_port, serial.serialize(homePos[2]))
+	modem.send(s_address, s_port, serial.serialize(homePos[3]))
 	getStatus()
 end
 function setHome()
 	lastAction = "Home set!"
 	getPlayerPos()
-	homePos[0] = playerPos[0]
-	homePos[1] = playerPos[1]-1
-	homePos[2] = playerPos[2]
+	homePos[1] = playerPos[1]
+	homePos[2] = playerPos[2]-1
+	homePos[3] = playerPos[3]
 	getStatus()
 end
 function getStatus()
@@ -97,16 +127,102 @@ function getStatus()
 	API.label(50, 9, "Z Pos: "..position[2])
 	
 end
-
+function areaToggleVisibility()
+	API.toggleButton("Toggle")
+	if buttonStatus == true then
+		modem.send(s_address, s_port, serial.serialize("showArea"))
+	else
+		modem.send(s_address, s_port, serial.serialize("hideArea"))
+	end
+	getStatus()
+end
+function areaSetCenter()
+	getPlayerPos()
+	workingCenter[1] = playerPos[1]
+	workingCenter[2] = playerPos[2]
+	workingCenter[3] = playerPos[3]
+	
+	workingArea[1] = workingCenter[1]
+	workingArea[2] = workingCenter[2]
+	workingArea[3] = workingCenter[3]
+	workingArea[4] = workingCenter[1]
+	workingArea[5] = workingCenter[2]
+	workingArea[6] = workingCenter[3]
+	
+	workingAreaType = areaTypes[1]
+	
+	modem.send(s_address, s_port, serial.serialize("setArea"))
+	i = 1
+	while i < 7 do
+		modem.send(s_address, s_port, serial.serialize(workingArea[i]))
+	end
+	modem.send(s_address, s_port, serial.serialize(workingAreaType))
+	
+	getStatus()
+end
+function areaIncX()
+	if(xSide)
+		workingArea[1] = workingArea[1]+1
+		xSide = false
+	else
+		workingArea[4] = workingArea[4]+1
+		xSide = true
+	end
+end
+function areaDecX()
+	if(xSide)
+		workingArea[4] = workingArea[4]-1
+		xSide = false
+	else
+		workingArea[1] = workingArea[1]+1
+		xSide = true
+	end
+end
+function areaIncY()
+	if(xSide)
+		workingArea[1] = workingArea[1]+1
+		xSide = false
+	else
+		workingArea[4] = workingArea[4]+1
+		xSide = true
+	end
+end
+function areaDecY()
+	if(xSide)
+		workingArea[4] = workingArea[4]-1
+		xSide = false
+	else
+		workingArea[1] = workingArea[1]+1
+		xSide = true
+	end
+end
+function areaIncZ()
+	if(xSide)
+		workingArea[1] = workingArea[1]+1
+		xSide = false
+	else
+		workingArea[4] = workingArea[4]+1
+		xSide = true
+	end
+end
+function areaDecZ()
+	if(xSide)
+		workingArea[4] = workingArea[4]-1
+		xSide = false
+	else
+		workingArea[1] = workingArea[1]+1
+		xSide = true
+	end
+end
 function shutdown()
 	running = false
 end
 
 function getPlayerPos()
 	pPosX, pPosY, pPosZ = nav.getPosition()
-	playerPos[0] = pPosX + POS_OFFSET[1]
-	playerPos[1] = pPosY + POS_OFFSET[2]
-	playerPos[2] = pPosZ + POS_OFFSET[3]
+	playerPos[1] = pPosX + POS_OFFSET[1]
+	playerPos[2] = pPosY + POS_OFFSET[2]
+	playerPos[3] = pPosZ + POS_OFFSET[3]
 end
 
 function getClick()
