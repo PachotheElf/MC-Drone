@@ -155,6 +155,7 @@ function areaSetCenter()
 	i = 1
 	while i < 7 do
 		modem.send(s_address, s_port, serial.serialize(workingArea[i]))
+		i = i + 1
 	end
 	modem.send(s_address, s_port, serial.serialize(workingAreaType))
 	
