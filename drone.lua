@@ -11,6 +11,7 @@ s_port = 1;
 
 -- Program states
 running = true;
+showArea = false;
 
 --	Drone area buffer
 areaBuffer = {0,0,0,0,0,0}
@@ -20,6 +21,9 @@ areaType = "";
 local function restoreArea()
 	drone.clearArea()
 	drone.addArea(areaBuffer[0], areaBuffer[1], areaBuffer[2], areaBuffer[3], areaBuffer[4], areaBuffer[5], areaType)
+	for k,v in pairs(areaBuffer) do
+		print(k, v)
+	end
 end
 local function status()
 	if(drone.isConnectedToDrone()) then
@@ -62,9 +66,11 @@ while running do
 	elseif (message == "showArea") then
 		print("Displaying area")
 		drone.showArea()
+		showArea = true;
 	elseif (message == "hideArea") then	
 		print("Hiding area")
 		drone.hideArea()
+		showArea = false;
 	elseif (message == "setArea") then
 		print("Setting new area")
 		local i = 1
@@ -76,6 +82,11 @@ while running do
 		local _,_,_,_,_,message = event.pull("modem_message")
 		areaType = serial.unserialize(message)
 		restoreArea()
+		if(showArea == true) then
+			drone.showArea()
+		else
+			drone.hideArea();
+		end
 		
 	elseif (message == "shutdown") then
 		running = false;

@@ -56,8 +56,8 @@ function API.fillTable()
 		API.setTable("-", areaDecX, 18, 25, 12, 12)
 		API.label(26, 12, "X")
 		API.setTable("+", areaIncX, 27, 34, 12, 12)
-		API.setTable("++", areaIncX, 35, 42, 12, 12)
-		API.setTable("+++", areaIncX, 43, 50, 12, 12)
+		API.setTable("++", areaIncX5, 35, 42, 12, 12)
+		API.setTable("+++", areaIncX10, 43, 50, 12, 12)
 		
 		API.setTable("---", areaDecY, 3, 8, 15, 15)
 		API.setTable("--", areaDecY, 10, 15, 15, 15)
@@ -162,12 +162,18 @@ function areaSetCenter()
 	getStatus()
 end
 function areaIncX()
-	if(xSide) then
-		workingArea[1] = workingArea[1]+1
-		xSide = false
-	else
-		workingArea[4] = workingArea[4]+1
-		xSide = true
+function areaIncX5()
+	local counter = 0;
+	while (counter < 5) do
+		counter = counter + 1;
+		areaIncX();
+	end
+end
+function areaIncX10()
+	local counter = 0;
+	while (counter < 10) do
+		counter = counter + 1;
+		areaIncX();
 	end
 end
 function areaDecX()
