@@ -140,6 +140,8 @@ function getStatus()
 	API.label(50, 15, "Type: ".. workingAreaType)
 	API.label(50, 17, "Lengths:")
 	API.label(50, 18, "X: ".. xDist)
+	API.label(57, 18, "Y: ".. xDist)
+	API.label(65, 18, "Z: ".. xDist)
 end
 
 function areaToggleVisibility()
