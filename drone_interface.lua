@@ -51,7 +51,7 @@ function API.fillTable()
 		API.setTable("Show Area", areaToggleVisibility, 5,20, 9, 9)
 		
 		API.setTable("Set Area Center", areaSetCenter, 25, 40, 9, 9)
-		API.setTable("---", areaDecX, 3, 9, 12, 12)
+		API.setTable("---", areaDecX, 3, 8, 12, 12)
 		API.setTable("--", areaDecX5, 10, 16, 12, 12)
 		API.setTable("-", areaDecX10, 17, 23, 12, 12)
 		API.label(25, 12, "X")
