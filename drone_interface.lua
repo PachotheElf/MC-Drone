@@ -162,6 +162,14 @@ function areaSetCenter()
 	getStatus()
 end
 function areaIncX()
+	if(xSide) then
+		workingArea[1] = workingArea[1]+1
+		xSide = false
+	else
+		workingArea[4] = workingArea[4]+1
+		xSide = true
+	end
+end
 function areaIncX5()
 	local counter = 0;
 	while (counter < 5) do
@@ -187,10 +195,10 @@ function areaDecX()
 end
 function areaIncY()
 	if(ySide) then
-		workingArea[1] = workingArea[1]+1
+		workingArea[2] = workingArea[2]+1
 		ySide = false
 	else
-		workingArea[4] = workingArea[4]+1
+		workingArea[5] = workingArea[5]+1
 		ySide = true
 	end
 end
@@ -205,10 +213,10 @@ function areaDecY()
 end
 function areaIncZ()
 	if(zSide) then
-		workingArea[1] = workingArea[1]+1
+		workingArea[3] = workingArea[3]+1
 		zSide = false
 	else
-		workingArea[4] = workingArea[4]+1
+		workingArea[6] = workingArea[6]+1
 		zSide = true
 	end
 end
