@@ -1,5 +1,6 @@
 local component = require("component")
 local event = require("event")
+computer = require("computer")
 serial = require("serialization")
 
 drone = component.droneInterface
@@ -44,6 +45,7 @@ local function status()
 	end
 end
 
+computer.addUser("Pacho")
 modem.open(s_port)  --  Tablet port
 while running do
 	local _,_, from, port, dist, msg = event.pull("modem_message")
