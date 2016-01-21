@@ -39,6 +39,9 @@ local workingCenter = {0,0,0}
 local workingArea = {0,0,0,0,0,0}
 local workingAreaType = "Filled"
 local areaTypes = {"Filled", "Frame", "Walls", "Sphere", "Line", "X-Wall", "Y-Wall", "Z-Wall", "X-Cylinder", "Y-Cylinder", "Z-Cylinder", "X-Pyramid", "Y-Pyramid", "Z-Pyramid", "Grid"}
+local xDist = 0;
+local yDist = 0;
+local zDist = 0;
 
 --	FUNCTIONS
 function API.fillTable()
@@ -51,29 +54,29 @@ function API.fillTable()
 		API.setTable("Show Area", areaToggleVisibility, 5,20, 9, 9)
 		
 		API.setTable("Set Area Center", areaSetCenter, 25, 40, 9, 9)
-		API.setTable("---", areaDecX, 3, 7, 12, 12)
-		API.setTable("--", areaDecX5, 9, 13, 12, 12)
-		API.setTable("-", areaDecX10, 15, 19, 12, 12)
-		API.label(25, 12, "X")
-		API.setTable("+", areaIncX, 25, 30, 12, 12)
-		API.setTable("++", areaIncX5, 31, 36, 12, 12)
-		API.setTable("+++", areaIncX10, 37, 41, 12, 12)
+		API.setTable("---", areaDecX, 	3, 7, 12, 12)
+		API.setTable("--" , areaDecX5, 	9, 13, 12, 12)
+		API.setTable("-"  , areaDecX10, 15, 19, 12, 12)
+		API.label(21, 12, "X")
+		API.setTable("+"  , areaIncX, 	23, 27, 12, 12)
+		API.setTable("++" , areaIncX5, 	29, 33, 12, 12)
+		API.setTable("+++", areaIncX10, 35, 39, 12, 12)
 		
---		API.setTable("---", areaDecY, 3, 8, 15, 15)
---		API.setTable("--", areaDecY, 10, 15, 15, 15)
---		API.setTable("-", areaDecY, 16, 22, 15, 15)
---		API.label(26, 15, "Y")
---		API.setTable("+", areaIncY, 26, 29, 15, 15)
---		API.setTable("++", areaIncY, 30, 33, 15, 15)
---		API.setTable("+++", areaIncY, 34, 37, 15, 15)
+		API.setTable("---", areaDecY, 	3, 7, 15, 15)
+		API.setTable("--" , areaDecY, 	9, 13, 15, 15)
+		API.setTable("-"  , areaDecY, 	15, 19, 15, 15)
+		API.label(21, 15, "Y")
+		API.setTable("+"  , areaIncY, 	23, 27, 15, 15)
+		API.setTable("++" , areaIncY, 	29, 33, 15, 15)
+		API.setTable("+++", areaIncY, 	34, 39, 15, 15)
 		
---		API.setTable("---", areaDecZ, 3, 8, 18, 18)
---		API.setTable("--", areaDecZ, 10, 15, 18, 18)
---		API.setTable("-", areaDecZ, 16, 22, 18, 18)
---		API.label(26, 18, "Z")
---		API.setTable("+", areaIncZ, 26, 29, 18, 18)
---		API.setTable("++", areaIncZ, 30, 33, 18, 18)
---		API.setTable("++", areaIncZ, 34, 37, 18, 18)
+		API.setTable("---", areaDecZ, 	3, 7, 18, 18)
+		API.setTable("--" , areaDecZ, 	9, 13, 18, 18)
+		API.setTable("-"  , areaDecZ, 	15, 19, 18, 18)
+		API.label(26, 18, "Z")
+		API.setTable("+"  , areaIncZ,	23, 27, 18, 18)
+		API.setTable("++" , areaIncZ, 	29, 33, 18, 18)
+		API.setTable("+++", areaIncZ, 	34, 39, 18, 18)
 		API.label(60,3, "Drone Status")
 		getStatus()
 	else
@@ -127,14 +130,16 @@ function getStatus()
 	API.label(50, 9, "Z Pos: "..position[2])
 	
 	--	Work Area
-	API.label(60, 11, "Work Area")
-	API.label(60, 12, "X1: ".. workingArea[1])
-	API.label(70, 12, "X2: ".. workingArea[4])
-	API.label(60, 13, "Y1: ".. workingArea[1])
-	API.label(70, 13, "Y2: ".. workingArea[4])
-	API.label(60, 14, "Z1: ".. workingArea[1])
-	API.label(70, 14, "Z2: ".. workingArea[4])
-	API.label(60, 15, "Type: ".. workingAreaType)
+	API.label(50, 11, "Work Area")
+	API.label(50, 12, "X1: ".. workingArea[1])
+	API.label(65, 12, "X2: ".. workingArea[4])
+	API.label(50, 13, "Y1: ".. workingArea[1])
+	API.label(65, 13, "Y2: ".. workingArea[4])
+	API.label(50, 14, "Z1: ".. workingArea[1])
+	API.label(65, 14, "Z2: ".. workingArea[4])
+	API.label(50, 15, "Type: ".. workingAreaType)
+	API.label(50, 17, "Lengths:")
+	API.label(50, 18, "X: ".. xDist)
 end
 
 function areaToggleVisibility()
@@ -173,6 +178,7 @@ function areaSetCenter()
 end
 
 function areaIncX()
+	xDist = xDist + 1;
 	if(xSide) then
 		workingArea[1] = workingArea[1]+1
 		xSide = false
@@ -196,12 +202,15 @@ function areaIncX10()
 	end
 end
 function areaDecX()
-	if(xSide) then
-		workingArea[4] = workingArea[4]-1
-		xSide = false
-	else
-		workingArea[1] = workingArea[1]+1
-		xSide = true
+	if( xDist > 0 ) then
+		xDist = xDist - 1;
+		if(xSide) then
+			workingArea[4] = workingArea[4]-1
+			xSide = false
+		else
+			workingArea[1] = workingArea[1]+1
+			xSide = true
+		end
 	end
 end
 function areaDecX5()
@@ -220,6 +229,7 @@ function areaDecX10()
 end
 
 function areaIncY()
+	yDist = yDist + 1;
 	if(ySide) then
 		workingArea[2] = workingArea[2]+1
 		ySide = false
@@ -229,15 +239,20 @@ function areaIncY()
 	end
 end
 function areaDecY()
-	if(ySide) then
-		workingArea[4] = workingArea[4]-1
-		ySide = false
-	else
-		workingArea[1] = workingArea[1]+1
-		ySide = true
+	if(yDist > 0) then
+		yDist = yDist - 1;
+		if(ySide) then
+			workingArea[4] = workingArea[4]-1
+			ySide = false
+		else
+			workingArea[1] = workingArea[1]+1
+			ySide = true
+		end
 	end
 end
+
 function areaIncZ()
+	zDist = zDist + 1;
 	if(zSide) then
 		workingArea[3] = workingArea[3]+1
 		zSide = false
@@ -247,12 +262,15 @@ function areaIncZ()
 	end
 end
 function areaDecZ()
-	if(zSide) then
-		workingArea[4] = workingArea[4]-1
-		zSide = false
-	else
-		workingArea[1] = workingArea[1]+1
-		zSide = true
+	if(	zDist > 0 ) then
+		zDist = zDist - 1;
+		if(zSide) then
+			workingArea[4] = workingArea[4]-1
+			zSide = false
+		else
+			workingArea[1] = workingArea[1]+1
+			zSide = true
+		end
 	end
 end
 
