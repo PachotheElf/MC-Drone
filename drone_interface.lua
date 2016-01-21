@@ -182,12 +182,13 @@ end
 function areaIncX()
 	xDist = xDist + 1;
 	if(xSide) then
-		workingArea[1] = workingArea[1]+1
+		workingArea[1] = workingArea[1]-1
 		xSide = false
 	else
 		workingArea[4] = workingArea[4]+1
 		xSide = true
 	end
+	getStatus()
 end
 function areaIncX5()
 	local counter = 0;
@@ -214,6 +215,7 @@ function areaDecX()
 			xSide = true
 		end
 	end
+	getStatus()
 end
 function areaDecX5()
 	local counter = 0;
@@ -239,6 +241,7 @@ function areaIncY()
 		workingArea[5] = workingArea[5]+1
 		ySide = true
 	end
+	getStatus()
 end
 function areaIncY5()
 	local counter = 0;
@@ -265,6 +268,7 @@ function areaDecY()
 			ySide = true
 		end
 	end
+	getStatus()
 end
 function areaDecY5()
 	local counter = 0;
@@ -290,6 +294,7 @@ function areaIncZ()
 		workingArea[6] = workingArea[6]+1
 		zSide = true
 	end
+	getStatus()
 end
 function areaIncZ5()
 	local counter = 0;
@@ -316,6 +321,7 @@ function areaDecZ()
 			zSide = true
 		end
 	end
+	getStatus()
 end
 function areaDecZ5()
 	local counter = 0;

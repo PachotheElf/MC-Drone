@@ -24,6 +24,11 @@ local function restoreArea()
 	for k,v in pairs(areaBuffer) do
 		print(k, v)
 	end
+	
+	drone.hideArea();
+	if(showArea == true) then
+		drone.showArea()
+	end	
 end
 local function status()
 	if(drone.isConnectedToDrone()) then
@@ -82,11 +87,6 @@ while running do
 		local _,_,_,_,_,message = event.pull("modem_message")
 		areaType = serial.unserialize(message)
 		restoreArea()
-		if(showArea == true) then
-			drone.showArea()
-		else
-			drone.hideArea();
-		end
 		
 	elseif (message == "shutdown") then
 		running = false;
