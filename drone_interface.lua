@@ -51,13 +51,13 @@ function API.fillTable()
 		API.setTable("Show Area", areaToggleVisibility, 5,20, 9, 9)
 		
 		API.setTable("Set Area Center", areaSetCenter, 25, 40, 9, 9)
-		API.setTable("---", areaDecX, 3, 9, 12, 12)
---		API.setTable("--", areaDecX, 10, 17, 12, 12)
-		API.setTable("-", areaDecX, 18, 25, 12, 12)
-		API.label(26, 12, "X")
-		API.setTable("+", areaIncX, 27, 34, 12, 12)
---		API.setTable("++", areaIncX5, 35, 42, 12, 12)
-		API.setTable("+++", areaIncX10, 43, 50, 12, 12)
+		API.setTable("---", areaDecX, 3, 8, 12, 12)
+		API.setTable("--", areaDecX5, 9, 14, 12, 12)
+		API.setTable("-", areaDecX10, 15, 20, 12, 12)
+		API.label(22, 12, "X")
+		API.setTable("+", areaIncX, 25, 30, 12, 12)
+		API.setTable("++", areaIncX5, 31, 36, 12, 12)
+		API.setTable("+++", areaIncX10, 37, 41, 12, 12)
 		
 --		API.setTable("---", areaDecY, 3, 8, 15, 15)
 --		API.setTable("--", areaDecY, 10, 15, 15, 15)
@@ -126,7 +126,17 @@ function getStatus()
 	API.label(50, 8, "Y Pos: "..position[1])
 	API.label(50, 9, "Z Pos: "..position[2])
 	
+	--	Work Area
+	API.label(60, 11, "Work Area")
+	API.label(60, 12, "X1: ".. workingArea[1])
+	API.label(70, 12, "X2: ".. workingArea[4])
+	API.label(60, 13, "Y1: ".. workingArea[1])
+	API.label(70, 13, "Y2: ".. workingArea[4])
+	API.label(60, 14, "Z1: ".. workingArea[1])
+	API.label(70, 14, "Z2: ".. workingArea[4])
+	API.label(60, 15, "Type: ".. workingAreaType)
 end
+
 function areaToggleVisibility()
 	API.toggleButton("Show Area")
 	if buttonStatus == true then
@@ -161,6 +171,7 @@ function areaSetCenter()
 	
 	getStatus()
 end
+
 function areaIncX()
 	if(xSide) then
 		workingArea[1] = workingArea[1]+1
@@ -193,6 +204,21 @@ function areaDecX()
 		xSide = true
 	end
 end
+function areaDecX5()
+	local counter = 0;
+	while (counter < 5) do
+		counter = counter + 1;
+		areaDecX();
+	end
+end
+function areaDecX10()
+	local counter = 0;
+	while (counter < 10) do
+		counter = counter + 1;
+		areaDecX();
+	end
+end
+
 function areaIncY()
 	if(ySide) then
 		workingArea[2] = workingArea[2]+1
@@ -229,6 +255,7 @@ function areaDecZ()
 		zSide = true
 	end
 end
+
 function areaMoveXP()
 end
 function areaMoveXN()
