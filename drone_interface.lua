@@ -167,7 +167,8 @@ function areaSetCenter()
 	workingArea[6] = workingCenter[3]
 	
 	workingAreaType = areaTypes[1]
-	
+end
+function areaSend()
 	modem.send(s_address, s_port, serial.serialize("setArea"))
 	i = 1
 	while i < 7 do
@@ -188,7 +189,7 @@ function areaIncX()
 		workingArea[4] = workingArea[4]+1
 		xSide = true
 	end
-	getStatus()
+	areaSend()
 end
 function areaIncX5()
 	local counter = 0;
@@ -208,14 +209,14 @@ function areaDecX()
 	if( xDist > 0 ) then
 		xDist = xDist - 1;
 		if(xSide) then
-			workingArea[4] = workingArea[4]-1
+			workingArea[4] = workingArea[4]+1
 			xSide = false
 		else
-			workingArea[1] = workingArea[1]+1
+			workingArea[1] = workingArea[1]-1
 			xSide = true
 		end
 	end
-	getStatus()
+	areaSend()
 end
 function areaDecX5()
 	local counter = 0;
@@ -235,13 +236,13 @@ end
 function areaIncY()
 	yDist = yDist + 1;
 	if(ySide) then
-		workingArea[2] = workingArea[2]+1
+		workingArea[2] = workingArea[2]-1
 		ySide = false
 	else
 		workingArea[5] = workingArea[5]+1
 		ySide = true
 	end
-	getStatus()
+	areaSend()
 end
 function areaIncY5()
 	local counter = 0;
@@ -261,14 +262,14 @@ function areaDecY()
 	if(yDist > 0) then
 		yDist = yDist - 1;
 		if(ySide) then
-			workingArea[4] = workingArea[4]-1
+			workingArea[4] = workingArea[4]+1
 			ySide = false
 		else
-			workingArea[1] = workingArea[1]+1
+			workingArea[1] = workingArea[1]-1
 			ySide = true
 		end
 	end
-	getStatus()
+	areaSend()
 end
 function areaDecY5()
 	local counter = 0;
@@ -288,13 +289,13 @@ end
 function areaIncZ()
 	zDist = zDist + 1;
 	if(zSide) then
-		workingArea[3] = workingArea[3]+1
+		workingArea[3] = workingArea[3]-1
 		zSide = false
 	else
 		workingArea[6] = workingArea[6]+1
 		zSide = true
 	end
-	getStatus()
+	areaSend()
 end
 function areaIncZ5()
 	local counter = 0;
@@ -314,14 +315,14 @@ function areaDecZ()
 	if(	zDist > 0 ) then
 		zDist = zDist - 1;
 		if(zSide) then
-			workingArea[4] = workingArea[4]-1
+			workingArea[4] = workingArea[4]+1
 			zSide = false
 		else
-			workingArea[1] = workingArea[1]+1
+			workingArea[1] = workingArea[1]-1
 			zSide = true
 		end
 	end
-	getStatus()
+	areaSend()
 end
 function areaDecZ5()
 	local counter = 0;
