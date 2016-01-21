@@ -39,6 +39,7 @@ local function status()
 	end
 end
 
+computer.addUser("Pacho")
 modem.open(s_port)  --  Tablet port
 while running do
 	local _,_, from, port, dist, msg = event.pull("modem_message")
