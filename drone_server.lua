@@ -39,6 +39,7 @@ local workingCenter = {0,0,0}
 local workingArea = {0,0,0,0,0,0}
 local workingAreaType = "Filled"
 local areaTypes = {"Filled", "Frame", "Walls", "Sphere", "Line", "X-Wall", "Y-Wall", "Z-Wall", "X-Cylinder", "Y-Cylinder", "Z-Cylinder", "X-Pyramid", "Y-Pyramid", "Z-Pyramid", "Grid"}
+local selectedAreaType = 1;
 local xDist = 0;
 local yDist = 0;
 local zDist = 0;
@@ -77,6 +78,9 @@ function API.fillTable()
 		API.setTable("Z+"  , areaIncZ,		23, 27, 18, 18)
 		API.setTable("Z++" , areaIncZ5, 	29, 33, 18, 18)
 		API.setTable("Z+++", areaIncZ10,	35, 39, 18, 18)
+		
+		API.setTable("Change", changeAreaType, 69, 76, 15, 15)
+		
 		API.label(60,3, "Drone Status")
 		getStatus()
 	else
@@ -156,6 +160,9 @@ function areaSetCenter()
 	workingArea[6] = workingCenter[3]
 	
 	workingAreaType = areaTypes[1]
+	xDist = 1;
+	yDist = 1;
+	zDist = 1;
 	areaSend()
 end
 function areaSend()
@@ -167,6 +174,11 @@ function areaSend()
 		drone.hideArea()
 	end
 	getStatus()
+end
+function changeAreaType()
+	selectedAreaType = selectedAreaType%15+1
+	workingAreaType = areaTypes[selectedAreaType]
+	areaSend()
 end
 
 function areaIncX()
@@ -195,7 +207,7 @@ function areaIncX10()
 	end
 end
 function areaDecX()
-	if( xDist > 0 ) then
+	if( xDist > 1 ) then
 		xDist = xDist - 1;
 		if(xSide) then
 			workingArea[1] = workingArea[1]+1
@@ -248,7 +260,7 @@ function areaIncY10()
 	end
 end
 function areaDecY()
-	if(yDist > 0) then
+	if(yDist > 1) then
 		yDist = yDist - 1;
 		if(ySide) then
 			workingArea[2] = workingArea[2]+1
@@ -301,7 +313,7 @@ function areaIncZ10()
 	end
 end
 function areaDecZ()
-	if(	zDist > 0 ) then
+	if(	zDist > 1 ) then
 		zDist = zDist - 1;
 		if(zSide) then
 			workingArea[3] = workingArea[3]+1
