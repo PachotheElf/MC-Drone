@@ -6,6 +6,7 @@ local colors = require("colors")
 local component = require("component")
 local gpu = component.gpu
 local drone = component.droneInterface
+local modem = component.modem
 
 --	PROGRAM STATE
 --	0 = main screen
@@ -109,10 +110,10 @@ function setHome()
 end
 function getStatus()
 		--	Pressure
-	pressure = drone.getPressure()
+	pressure = drone.getDronePressure()
 
 	--  Position
-	position[1], position[2], position[3] = drone.getPosition()
+	position[1], position[2], position[3] = drone.getDronePosition()
 
 	API.label(50, 5, "Action:                ")
 	API.label(50, 5, "Action: "..lastAction)

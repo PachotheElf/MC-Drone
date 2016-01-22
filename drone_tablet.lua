@@ -6,6 +6,8 @@ serial = require("serialization")
 local modem = component.modem;
 local nav = component.navigation;
 
+local running = true
+
 --	Communications
 s_address = "";
 s_port = 1;
