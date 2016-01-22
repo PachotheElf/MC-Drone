@@ -81,6 +81,11 @@ function API.fillTable()
 		
 		API.setTable("Change", changeAreaType, 69, 76, 15, 15)
 		
+		API.setTable("Set Import", setImportChest, 5, 20, 21, 21)
+		API.setTable("Set Export", setExportChest, 25, 40, 21, 21)
+		API.setTable("Build", buildArea, 5, 20, 24, 24)
+		API.setTable("Dig", digArea, 25, 40, 24, 24)
+		
 		API.label(60,3, "Drone Status")
 		getStatus()
 	else
@@ -112,6 +117,22 @@ function setHome()
 	homePos[3] = playerPos[3]
 	getStatus()
 end
+function setImportChest()
+	lastAction = "Import set!"
+	getPlayerPos()
+	importChestPos[1] = playerPos[1]
+	importChestPos[2] = playerPos[2]-1
+	importChestPos[3] = playerPos[3]
+	getStatus()
+end
+function setExportChest()
+	lastAction = "Export set!"
+	getPlayerPos()
+	exportChestPos[1] = playerPos[1]
+	exportChestPos[2] = playerPos[2]-1
+	exportChestPos[3] = playerPos[3]
+	getStatus()
+end
 function getStatus()
 		--	Pressure
 	pressure = drone.getDronePressure()
@@ -134,11 +155,24 @@ function getStatus()
 	API.label(65, 13, "Y2: ".. workingArea[5])
 	API.label(50, 14, "Z1: ".. workingArea[3])
 	API.label(65, 14, "Z2: ".. workingArea[6])
+	API.label(50, 15, "Type:           ")
 	API.label(50, 15, "Type: ".. workingAreaType)
 	API.label(50, 17, "Lengths:")
 	API.label(50, 18, "X: ".. xDist)
 	API.label(57, 18, "Y: ".. yDist)
 	API.label(65, 18, "Z: ".. zDist)
+end
+
+function buildArea()
+	lastAction = "Building"
+	drone.setAction("place")
+	getStatus()
+end
+
+function digArea()
+	lastAction = "Dig"
+	drone.setAction("dig")
+	getStatus()
 end
 
 function areaToggleVisibility()
