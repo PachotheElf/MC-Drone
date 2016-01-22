@@ -45,7 +45,7 @@ while running do
 		s_address = ""
 		confirmed = false;
 	else
-		print("||"..message.."|| Confirmation: "..confirmed)
+		print("||"..message.."|| Confirmation: "..(serialization.serialize(confirmed)))
 	end
 end
 	
