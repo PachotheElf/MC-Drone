@@ -13,6 +13,7 @@ local modem = component.modem
 --	1 = 
 local POLL_TIME = 1
 local POLL_REPEAT = 10
+local POLL_TIMER_ID = 0	--	SET BY THE PROGRAM
 local state	= 0
 local xSide = true
 local ySide = true
@@ -147,6 +148,11 @@ function getStatus()
 
 	API.label(50, 5, "Action:                ")
 	API.label(50, 5, "Action: "..lastAction)
+	if(isBusy == true)
+		API.label(70, 5, "Working...")
+	else
+		API.label(70, 5, "          ")
+	end
 	API.label(50, 6, "Pressure:"..pressure)
 	API.label(50, 7, "X Pos: "..position[1])
 	API.label(50, 8, "Y Pos: "..position[2])
@@ -173,14 +179,14 @@ function importItems()
 	drone.clearArea()
 	drone.addArea(importChestPos[1], importChestPos[2], importChestPos[3])
 	drone.setAction("inventoryImport")
-	event.timer(POLL_TIME, areaSend, POLL_REPEAT)
+	POLL_TIMER_ID = event.timer(POLL_TIME, areaSend, POLL_REPEAT)
 end
 function exportItems()
 	lastAction = "Exporting items"
 	drone.clearArea()
 	drone.addArea(exportChestPos[1], exportChestPos[2], exportChestPos[3])
 	drone.setAction("inventoryExport")
-	event.timer(POLL_TIME, areaSend, POLL_REPEAT)
+	POLL_TIMER_ID = event.timer(POLL_TIME, areaSend, POLL_REPEAT)
 end
 function buildArea()
 	lastAction = "Building"
@@ -220,6 +226,8 @@ end
 function areaSend()
 	if(isBusy == true)
 		isBusy = not drone.isActionDone()
+		if(isBusy == false)
+			event.cancel(POLL_TIMER_ID)
 	else	
 		drone.clearArea()
 		drone.addArea(workingArea[1],workingArea[2],workingArea[3],workingArea[4],workingArea[5],workingArea[6],workingAreaType)
