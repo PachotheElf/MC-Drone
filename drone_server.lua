@@ -54,29 +54,29 @@ function API.fillTable()
 		API.setTable("Show Area", areaToggleVisibility, 5,20, 9, 9)
 		
 		API.setTable("Set Area Center", areaSetCenter, 25, 40, 9, 9)
-		API.setTable("---", areaDecX, 	3, 7, 12, 12)
-		API.setTable("--" , areaDecX5, 	9, 13, 12, 12)
-		API.setTable("-"  , areaDecX10, 15, 19, 12, 12)
+		API.setTable("X---", areaDecX, 		3, 7, 12, 12)
+		API.setTable("X--" , areaDecX5, 	9, 13, 12, 12)
+		API.setTable("X-"  , areaDecX10, 	15, 19, 12, 12)
 		API.label(21, 12, "X")
-		API.setTable("+"  , areaIncX, 	23, 27, 12, 12)
-		API.setTable("++" , areaIncX5, 	29, 33, 12, 12)
-		API.setTable("+++", areaIncX10, 35, 39, 12, 12)
+		API.setTable("X+"  , areaIncX, 		23, 27, 12, 12)
+		API.setTable("X++" , areaIncX5, 	29, 33, 12, 12)
+		API.setTable("X+++", areaIncX10, 	35, 39, 12, 12)
 		
-		API.setTable("---", areaDecY, 	3, 7, 15, 15)
-		API.setTable("--" , areaDecY5, 	9, 13, 15, 15)
-		API.setTable("-"  , areaDecY10, 15, 19, 15, 15)
+		API.setTable("Y---", areaDecY, 		3, 7, 15, 15)
+		API.setTable("Y--" , areaDecY5, 	9, 13, 15, 15)
+		API.setTable("Y-"  , areaDecY10, 	15, 19, 15, 15)
 		API.label(21, 15, "Y")
-		API.setTable("+"  , areaIncY, 	23, 27, 15, 15)
-		API.setTable("++" , areaIncY5, 	29, 33, 15, 15)
-		API.setTable("+++", areaIncY10,	35, 39, 15, 15)
+		API.setTable("Y+"  , areaIncY, 		23, 27, 15, 15)
+		API.setTable("Y++" , areaIncY5, 	29, 33, 15, 15)
+		API.setTable("Y+++", areaIncY10,	35, 39, 15, 15)
 		
-		API.setTable("---", areaDecZ, 	3, 7, 18, 18)
-		API.setTable("--" , areaDecZ5, 	9, 13, 18, 18)
-		API.setTable("-"  , areaDecZ10,	15, 19, 18, 18)
+		API.setTable("Z---", areaDecZ, 		3, 7, 18, 18)
+		API.setTable("Z--" , areaDecZ5, 	9, 13, 18, 18)
+		API.setTable("Z-"  , areaDecZ10,	15, 19, 18, 18)
 		API.label(21, 18, "Z")
-		API.setTable("+"  , areaIncZ,	23, 27, 18, 18)
-		API.setTable("++" , areaIncZ5, 	29, 33, 18, 18)
-		API.setTable("+++", areaIncZ10,	35, 39, 18, 18)
+		API.setTable("Z+"  , areaIncZ,		23, 27, 18, 18)
+		API.setTable("Z++" , areaIncZ5, 	29, 33, 18, 18)
+		API.setTable("Z+++", areaIncZ10,	35, 39, 18, 18)
 		API.label(60,3, "Drone Status")
 		getStatus()
 	else
@@ -198,10 +198,10 @@ function areaDecX()
 	if( xDist > 0 ) then
 		xDist = xDist - 1;
 		if(xSide) then
-			workingArea[4] = workingArea[4]+1
+			workingArea[1] = workingArea[1]+1
 			xSide = false
 		else
-			workingArea[1] = workingArea[1]-1
+			workingArea[4] = workingArea[4]-1
 			xSide = true
 		end
 	end
@@ -251,10 +251,10 @@ function areaDecY()
 	if(yDist > 0) then
 		yDist = yDist - 1;
 		if(ySide) then
-			workingArea[4] = workingArea[4]+1
+			workingArea[2] = workingArea[2]+1
 			ySide = false
 		else
-			workingArea[1] = workingArea[1]-1
+			workingArea[5] = workingArea[5]-1
 			ySide = true
 		end
 	end
@@ -304,10 +304,10 @@ function areaDecZ()
 	if(	zDist > 0 ) then
 		zDist = zDist - 1;
 		if(zSide) then
-			workingArea[4] = workingArea[4]+1
+			workingArea[3] = workingArea[3]+1
 			zSide = false
 		else
-			workingArea[1] = workingArea[1]-1
+			workingArea[6] = workingArea[6]-1
 			zSide = true
 		end
 	end
