@@ -148,7 +148,7 @@ function getStatus()
 
 	API.label(50, 5, "Action:                ")
 	API.label(50, 5, "Action: "..lastAction)
-	if(isBusy == true)
+	if(isBusy == true) then
 		API.label(70, 5, "Working...")
 	else
 		API.label(70, 5, "          ")
@@ -224,10 +224,11 @@ function areaSetCenter()
 	areaSend()
 end
 function areaSend()
-	if(isBusy == true)
+	if(isBusy == true) then
 		isBusy = not drone.isActionDone()
-		if(isBusy == false)
+		if(isBusy == false) then
 			event.cancel(POLL_TIMER_ID)
+		end
 	else	
 		drone.clearArea()
 		drone.addArea(workingArea[1],workingArea[2],workingArea[3],workingArea[4],workingArea[5],workingArea[6],workingAreaType)
