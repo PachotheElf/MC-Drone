@@ -175,16 +175,20 @@ function getStatus()
 end
 
 function importItems()
-	lastAction = "Importing items"
+	lastAction = "Importing"
 	drone.clearArea()
 	drone.addArea(importChestPos[1], importChestPos[2], importChestPos[3])
+	
+	isBusy = true;
 	drone.setAction("inventoryImport")
 	POLL_TIMER_ID = event.timer(POLL_TIME, areaSend, POLL_REPEAT)
 end
 function exportItems()
-	lastAction = "Exporting items"
+	lastAction = "Exporting"
 	drone.clearArea()
 	drone.addArea(exportChestPos[1], exportChestPos[2], exportChestPos[3])
+	
+	isBusy = true;
 	drone.setAction("inventoryExport")
 	POLL_TIMER_ID = event.timer(POLL_TIME, areaSend, POLL_REPEAT)
 end
