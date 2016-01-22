@@ -169,7 +169,7 @@ function importItems()
 	lastAction = "Importing items"
 	drone.clearArea()
 	drone.addArea(importChestPos[1], importChestPos[2], importChestPos[3])
-	drone.setAction("inventoryimport")
+	drone.setAction("inventoryImport")
 	getStatus()
 	areaSend()
 end
@@ -177,7 +177,7 @@ function exportItems()
 	lastAction = "Exporting items"
 	drone.clearArea()
 	drone.addArea(exportChestPos[1], exportChestPos[2], exportChestPos[3])
-	drone.setAction("inventoryexport")
+	drone.setAction("inventoryExport")
 	getStatus()
 	areaSend()
 end
@@ -428,6 +428,8 @@ _,_, s_address,_,_,msg = event.pull("modem_message")
 message = serial.unserialize(msg)
 if (message == "linked!") then
 	modem.send(s_address, s_port, serial.serialize("confirm"))
+	drone.setUseCount(false)
+	drone.setSides(true,true,true,true,true,true)
 else
 	print("Could not find tablet to link to");
 	running = false;
