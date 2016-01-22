@@ -17,13 +17,13 @@ local zSide = true
 
 local running = true
 
---	COMMUNICATIONS VARIABLES
-local s_port = 1;
-local s_address = "";
-
---	PLAYER POSITION
-local POS_OFFSET = {256, 0, 512}
+--	POSITIONS
+local serverPos = {232,68,445}
 local playerPos = {0,0,0}
+
+--	COMMUNICATIONS
+s_address = ""
+s_port = 1;
 
 --	DRONE STATUS
 local pressure = 0.0;
@@ -82,33 +82,22 @@ function API.fillTable()
 	end
 	API.screen()
 end
-local function restoreArea()
-	drone.clearArea()
-	drone.addArea(workingArea[0], workingArea[1], workingArea[2], workingArea[3], workingArea[4], workingArea[5], workingAreaType)
-	
-	drone.hideArea();
-	if(showArea == true) then
-		drone.showArea()
-	end	
-end
 function approachPlayer()
-	lastAction = "Approach player"
+	lastAction = "Approach"
 	getPlayerPos()
 	drone.clearArea()
-	drone.addArea
-	modem.send(s_address, s_port, serial.serialize("approachPlayer"))
-	modem.send(s_address, s_port, serial.serialize(playerPos[1]))
-	modem.send(s_address, s_port, serial.serialize(playerPos[2]))
-	modem.send(s_address, s_port, serial.serialize(playerPos[3]))
+	drone.addArea(playerPos[1],playerPos[2],playerPos[3])
+	drone.setAction("goto")
 	getStatus()
+	areaSend()
 end
 function goHome()
 	lastAction = "Go home"
-	modem.send(s_address, s_port, serial.serialize("goHome"))
-	modem.send(s_address, s_port, serial.serialize(homePos[1]))
-	modem.send(s_address, s_port, serial.serialize(homePos[2]))
-	modem.send(s_address, s_port, serial.serialize(homePos[3]))
+	drone.clearArea()
+	drone.addArea(homePos[1],homePos[2],homePos[3])
+	drone.setAction("goto")
 	getStatus()
+	areaSend()
 end
 function setHome()
 	lastAction = "Home set!"
@@ -119,25 +108,18 @@ function setHome()
 	getStatus()
 end
 function getStatus()
-	modem.send(s_address, s_port, serial.serialize("status"))
 		--	Pressure
-	local _,_,_,_,_,message = event.pull("modem_message")
-	pressure = serial.unserialize(message)
+	pressure = drone.getPressure()
 
 	--  Position
-	local i = 0;
-	while i < 3 do
-	local _,_,_,_,_,message = event.pull("modem_message")
-	position[i] = serial.unserialize(message)
-	i = i + 1
-	end
+	position[1], position[2], position[3] = drone.getPosition()
 
 	API.label(50, 5, "Action:                ")
 	API.label(50, 5, "Action: "..lastAction)
 	API.label(50, 6, "Pressure:"..pressure)
-	API.label(50, 7, "X Pos: "..position[0])
-	API.label(50, 8, "Y Pos: "..position[1])
-	API.label(50, 9, "Z Pos: "..position[2])
+	API.label(50, 7, "X Pos: "..position[1])
+	API.label(50, 8, "Y Pos: "..position[2])
+	API.label(50, 9, "Z Pos: "..position[3])
 	
 	--	Work Area
 	API.label(50, 11, "Work Area")
@@ -156,12 +138,8 @@ end
 
 function areaToggleVisibility()
 	API.toggleButton("Show Area")
-	if buttonStatus == true then
-		modem.send(s_address, s_port, serial.serialize("showArea"))
-	else
-		modem.send(s_address, s_port, serial.serialize("hideArea"))
-	end
-	getStatus()
+	showArea = buttonStatus
+	areaSend()
 end
 function areaSetCenter()
 	getPlayerPos()
@@ -177,16 +155,16 @@ function areaSetCenter()
 	workingArea[6] = workingCenter[3]
 	
 	workingAreaType = areaTypes[1]
+	areaSend()
 end
 function areaSend()
-	modem.send(s_address, s_port, serial.serialize("setArea"))
-	i = 1
-	while i < 7 do
-		modem.send(s_address, s_port, serial.serialize(workingArea[i]))
-		i = i + 1
+	drone.clearArea()
+	drone.addArea(workingArea[1],workingArea[2],workingArea[3],workingArea[4],workingArea[5],workingArea[6],workingAreaType)
+	if(showArea == true) then
+		drone.showArea()
+	else
+		drone.hideArea()
 	end
-	modem.send(s_address, s_port, serial.serialize(workingAreaType))
-	
 	getStatus()
 end
 
@@ -358,10 +336,13 @@ function shutdown()
 end
 
 function getPlayerPos()
-	pPosX, pPosY, pPosZ = nav.getPosition()
-	playerPos[1] = pPosX + POS_OFFSET[1]
-	playerPos[2] = pPosY + POS_OFFSET[2]
-	playerPos[3] = pPosZ + POS_OFFSET[3]
+	modem.send(s_address, s_port, serial.serialize("getPosition"))
+	local i = 1;
+	while i <= 3 do
+		local _,_,_,_,_,message = event.pull("modem_message")
+		playerPos[i] = serial.unserialize(message)
+		i = i + 1
+	end
 end
 
 function getClick()
@@ -376,9 +357,17 @@ function getClick()
 end
 
 --	MAIN PROGRAM
-modem.open(1)
-modem.broadcast(1, serial.serialize("init"))
-_,_, s_address,_,_,_ = event.pull("modem_message")
+print("initializing")
+modem.open(s_port)
+modem.broadcast(s_port, serial.serialize("init"))
+_,_, s_address,_,_,msg = event.pull("modem_message")
+message = serial.unserialize(msg)
+if (message == "linked!") then
+	modem.send(s_address, s_port, serial.serialize("confirm"))
+else
+	print("Could not find tablet to link to");
+	running = false;
+end
 term.setCursorBlink(false)
 gpu.setResolution(80,25)
 API.clear()
@@ -387,3 +376,5 @@ API.heading("Drone Control Module")
 while running do
 	getClick()
 end
+
+modem.send(s_address, s_port, serial.serialize("unlink"))
