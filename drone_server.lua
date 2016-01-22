@@ -123,7 +123,7 @@ function setImportChest()
 	lastAction = "Import set!"
 	getPlayerPos()
 	importChestPos[1] = playerPos[1]
-	importChestPos[2] = playerPos[2]-1
+	importChestPos[2] = playerPos[2]-2
 	importChestPos[3] = playerPos[3]
 	getStatus()
 end
@@ -131,7 +131,7 @@ function setExportChest()
 	lastAction = "Export set!"
 	getPlayerPos()
 	exportChestPos[1] = playerPos[1]
-	exportChestPos[2] = playerPos[2]-1
+	exportChestPos[2] = playerPos[2]-2
 	exportChestPos[3] = playerPos[3]
 	getStatus()
 end
