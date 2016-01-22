@@ -11,6 +11,8 @@ local modem = component.modem
 --	PROGRAM STATE
 --	0 = main screen
 --	1 = 
+local POLL_TIME = 1
+local POLL_REPEAT = 10
 local state	= 0
 local xSide = true
 local ySide = true
@@ -30,6 +32,7 @@ s_port = 1;
 local pressure = 0.0;
 local position = {0,0,0}
 local lastAction = ""
+local isBusy = false;
 
 --	DRONE AREAS
 local importChestPos = {0,0,0}
@@ -170,16 +173,14 @@ function importItems()
 	drone.clearArea()
 	drone.addArea(importChestPos[1], importChestPos[2], importChestPos[3])
 	drone.setAction("inventoryImport")
-	getStatus()
-	areaSend()
+	event.timer(POLL_TIME, areaSend, POLL_REPEAT)
 end
 function exportItems()
 	lastAction = "Exporting items"
 	drone.clearArea()
 	drone.addArea(exportChestPos[1], exportChestPos[2], exportChestPos[3])
 	drone.setAction("inventoryExport")
-	getStatus()
-	areaSend()
+	event.timer(POLL_TIME, areaSend, POLL_REPEAT)
 end
 function buildArea()
 	lastAction = "Building"
@@ -217,12 +218,16 @@ function areaSetCenter()
 	areaSend()
 end
 function areaSend()
-	drone.clearArea()
-	drone.addArea(workingArea[1],workingArea[2],workingArea[3],workingArea[4],workingArea[5],workingArea[6],workingAreaType)
-	if(showArea == true) then
-		drone.showArea()
-	else
-		drone.hideArea()
+	if(isBusy == true)
+		isBusy = not drone.isActionDone()
+	else	
+		drone.clearArea()
+		drone.addArea(workingArea[1],workingArea[2],workingArea[3],workingArea[4],workingArea[5],workingArea[6],workingAreaType)
+		if(showArea == true) then
+			drone.showArea()
+		else
+			drone.hideArea()
+		end
 	end
 	getStatus()
 end
