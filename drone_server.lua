@@ -169,7 +169,7 @@ function importItems()
 	lastAction = "Importing items"
 	drone.clearArea()
 	drone.addArea(importChestPos[1], importChestPos[2], importChestPos[3])
-	drone.setAction("inventoryImport")
+	drone.setAction("inventoryimport")
 	getStatus()
 	areaSend()
 end
@@ -177,7 +177,7 @@ function exportItems()
 	lastAction = "Exporting items"
 	drone.clearArea()
 	drone.addArea(exportChestPos[1], exportChestPos[2], exportChestPos[3])
-	drone.setAction("inventoryExport")
+	drone.setAction("inventoryexport")
 	getStatus()
 	areaSend()
 end
