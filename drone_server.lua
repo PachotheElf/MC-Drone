@@ -83,8 +83,10 @@ function API.fillTable()
 		
 		API.setTable("Set Import", setImportChest, 5, 20, 21, 21)
 		API.setTable("Set Export", setExportChest, 25, 40, 21, 21)
-		API.setTable("Build", buildArea, 5, 20, 24, 24)
-		API.setTable("Dig", digArea, 25, 40, 24, 24)
+		API.setTable("Import items", importItems, 5, 20, 23, 23)
+		API.setTable("Export items", exportItems, 25, 40, 23, 23)
+		API.setTable("Build", buildArea, 5, 20, 25, 25)
+		API.setTable("Dig", digArea, 25, 40, 25, 25)
 		
 		API.label(60,3, "Drone Status")
 		getStatus()
@@ -163,12 +165,27 @@ function getStatus()
 	API.label(65, 18, "Z: ".. zDist)
 end
 
+function importItems()
+	lastAction = "Importing items"
+	drone.clearArea()
+	drone.addArea(importChestPos[1], importChestPos[2], importChestPos[3])
+	drone.setAction("inventoryImport")
+	getStatus()
+	areaSend()
+end
+function exportItems()
+	lastAction = "Exporting items"
+	drone.clearArea()
+	drone.addArea(exportChestPos[1], exportChestPos[2], exportChestPos[3])
+	drone.setAction("inventoryExport")
+	getStatus()
+	areaSend()
+end
 function buildArea()
 	lastAction = "Building"
 	drone.setAction("place")
 	getStatus()
 end
-
 function digArea()
 	lastAction = "Dig"
 	drone.setAction("dig")
