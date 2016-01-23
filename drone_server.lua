@@ -177,7 +177,8 @@ end
 function importItems()
 	lastAction = "Importing"
 	drone.clearArea()
-	drone.addArea(importChestPos[1], importChestPos[2], importChestPos[3])
+	local chestY2 = importChestPos[2]+1
+	drone.addArea(importChestPos[1], importChestPos[2], importChestPos[3], importChestPos[1], chestY2, importChestPos[3], "Filled")
 	
 	isBusy = true;
 	drone.setAction("inventoryImport")
@@ -186,7 +187,8 @@ end
 function exportItems()
 	lastAction = "Exporting"
 	drone.clearArea()
-	drone.addArea(exportChestPos[1], exportChestPos[2], exportChestPos[3])
+	local chestY2 = exportChestPos[2]+1
+	drone.addArea(exportChestPos[1], exportChestPos[2], exportChestPos[3],exportChestPos[1], chestY2, exportChestPos[3], "Filled")
 	
 	isBusy = true;
 	drone.setAction("inventoryExport")
