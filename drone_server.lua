@@ -103,17 +103,17 @@ function approachPlayer()
 	getPlayerPos()
 	drone.clearArea()
 	drone.addArea(playerPos[1],playerPos[2],playerPos[3])
+	isBusy = true;
 	drone.setAction("goto")
-	getStatus()
-	areaSend()
+	POLL_TIMER_ID = event.timer(POLL_TIME, areaSend, POLL_REPEAT)
 end
 function goHome()
 	lastAction = "Go home"
 	drone.clearArea()
 	drone.addArea(homePos[1],homePos[2],homePos[3])
+	isBusy = true;
 	drone.setAction("goto")
-	getStatus()
-	areaSend()
+	POLL_TIMER_ID = event.timer(POLL_TIME, areaSend, POLL_REPEAT)
 end
 function setHome()
 	lastAction = "Home set!"
@@ -194,13 +194,15 @@ function exportItems()
 end
 function buildArea()
 	lastAction = "Building"
+	isBusy = true;
 	drone.setAction("place")
-	getStatus()
+	POLL_TIMER_ID = event.timer(POLL_TIME, areaSend, POLL_REPEAT)
 end
 function digArea()
 	lastAction = "Dig"
+	isBusy = true;
 	drone.setAction("dig")
-	getStatus()
+	POLL_TIMER_ID = event.timer(POLL_TIME, areaSend, POLL_REPEAT)
 end
 
 function areaToggleVisibility()
