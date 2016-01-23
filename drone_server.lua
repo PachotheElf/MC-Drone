@@ -180,6 +180,9 @@ function importItems()
 	local chestY2 = importChestPos[2]+1
 	drone.addArea(importChestPos[1], importChestPos[2], importChestPos[3], importChestPos[1], chestY2, importChestPos[3], "Filled")
 	
+	drone.setUseCount(false)
+	drone.setSides(true,true,true,true,true,true)
+	
 	isBusy = true;
 	drone.setAction("inventoryImport")
 	POLL_TIMER_ID = event.timer(POLL_TIME, areaSend, POLL_REPEAT)
@@ -189,6 +192,9 @@ function exportItems()
 	drone.clearArea()
 	local chestY2 = exportChestPos[2]+1
 	drone.addArea(exportChestPos[1], exportChestPos[2], exportChestPos[3],exportChestPos[1], chestY2, exportChestPos[3], "Filled")
+	
+	drone.setUseCount(false)
+	drone.setSides(true,true,true,true,true,true)
 	
 	isBusy = true;
 	drone.setAction("inventoryExport")
@@ -244,11 +250,11 @@ function areaSend()
 	else	
 		drone.clearArea()
 		drone.addArea(workingArea[1],workingArea[2],workingArea[3],workingArea[4],workingArea[5],workingArea[6],workingAreaType)
-		if(showArea == true) then
-			drone.showArea()
-		else
-			drone.hideArea()
-		end
+		
+	end
+	drone.hideArea()
+	if(showArea == true) then
+		drone.showArea()
 	end
 	getStatus()
 end
@@ -454,8 +460,6 @@ _,_, s_address,_,_,msg = event.pull("modem_message")
 message = serial.unserialize(msg)
 if (message == "linked!") then
 	modem.send(s_address, s_port, serial.serialize("confirm"))
-	drone.setUseCount(false)
-	drone.setSides(true,true,true,true,true,true)
 else
 	print("Could not find tablet to link to");
 	running = false;
