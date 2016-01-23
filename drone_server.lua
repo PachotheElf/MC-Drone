@@ -12,7 +12,7 @@ local modem = component.modem
 --	0 = main screen
 --	1 = 
 local POLL_TIME = 1
-local POLL_REPEAT = 10
+local POLL_REPEAT = 180
 local POLL_TIMER_ID = 0	--	SET BY THE PROGRAM
 local state	= 0
 local xSide = true
@@ -208,7 +208,11 @@ end
 function areaToggleVisibility()
 	API.toggleButton("Show Area")
 	showArea = buttonStatus
-	areaSend()
+	if(showArea == true) then
+			drone.showArea()
+		else
+			drone.hideArea()
+	end
 end
 function areaSetCenter()
 	getPlayerPos()
